@@ -1,0 +1,25 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+
+# Static files
+wwwroot/
+App_Data/
+
+# Environment files / secrets
+appsettings.Development.json
+
+# Logs
+*.log
+
+# Rider
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

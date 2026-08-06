@@ -1,0 +1,121 @@
+@FamilyShoppingList_HostAddress = http://localhost:5250
+
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjdlMjYyMDRiLTU1Y2ItNDEwYy05ZmI5LTAyOTUyY2VjNDQ4OCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJ5b3Vzc2VmMiIsImV4cCI6MTc4NTYyMTA5MCwiaXNzIjoiRmFtaWx5U2hvcHBpbmdMaXN0IiwiYXVkIjoiRmFtaWx5U2hvcHBpbmdMaXN0In0._Q74GS0EYuYtaldA3f7HH5P-xBLsLQ_sTHVh6DT4fjY
+
+
+GET {{FamilyShoppingList_HostAddress}}/weatherforecast/
+Accept: application/json
+
+
+###
+POST {{FamilyShoppingList_HostAddress}}/items
+Content-Type: application/json
+
+{
+  "name": "coffee",
+  "quantity": 1,
+  "addedBy": "user"
+}
+
+###
+GET {{FamilyShoppingList_HostAddress}}/items/
+
+###
+PATCH {{FamilyShoppingList_HostAddress}}/items/5d2d5117-e46a-41dc-b3a9-eb4398287a4c/bought
+
+###
+PATCH {{FamilyShoppingList_HostAddress}}/items/f7329d46-23fc-40ac-9102-7f32d026bdf4/cancelled
+
+### 1. Confirm current state
+GET {{FamilyShoppingList_HostAddress}}/items
+
+### 2. Add a new item
+POST {{FamilyShoppingList_HostAddress}}/items
+Content-Type: application/json
+
+{
+  "name": "milk",
+  "quantity": 1,
+  "addedBy": "Youssef"
+}
+
+### 3. Add another item
+POST {{FamilyShoppingList_HostAddress}}/items
+Content-Type: application/json
+
+{
+  "name": "eggs",
+  "quantity": 12,
+  "addedBy": "Ahmed"
+}
+
+### 4. Fetch one by id (use a real Guid from step 2 or 3's response)
+GET {{FamilyShoppingList_HostAddress}}/items/8623f277-fde4-4dd2-b403-b801c55e744e
+
+### 5. Mark it bought
+PATCH {{FamilyShoppingList_HostAddress}}/items/8623f277-fde4-4dd2-b403-b801c55e744e/bought
+
+### 6. Mark the other one cancelled
+PATCH {{FamilyShoppingList_HostAddress}}/items/e38c1de8-92cc-46e2-a8e4-b493dbad79de/cancelled
+
+###
+DELETE {{FamilyShoppingList_HostAddress}}/items/e38c1de8-92cc-46e2-a8e4-b493dbad79de
+
+###
+POST {{FamilyShoppingList_HostAddress}}/register
+Content-Type: application/json
+
+{
+  "username": "ahm1ed1212",
+  "email": "ahmed@gmail.com",
+  "Password": "A23123123"
+}
+
+###
+POST {{FamilyShoppingList_HostAddress}}/login
+Content-Type: application/json
+
+{
+  "Username": "youssef2",
+  "Password": "123123qq"
+}
+
+###
+GET {{FamilyShoppingList_HostAddress}}/items
+Authorization: Bearer {{authToken}}
+
+###
+GET {{FamilyShoppingList_HostAddress}}/items/3f7b935e-996a-439b-8d45-e020d7303058
+Authorization: Bearer {{authToken}}
+
+###
+POST {{FamilyShoppingList_HostAddress}}/items
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "s",
+  "quantity": 22
+}
+
+###
+PATCH {{FamilyShoppingList_HostAddress}}/items/5bb18782-fb55-44e8-833e-92a8f49b410d/bought 
+Authorization: Bearer {{authToken}}
+
+###
+POST {{FamilyShoppingList_HostAddress}}/groups
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+{
+  "name": "test group6"
+}
+
+###
+GET {{FamilyShoppingList_HostAddress}}/groups
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+###
+GET {{FamilyShoppingList_HostAddress}}/groups
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
