@@ -24,15 +24,18 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
 });
 
+var allowedOrigins = builder.Configuration
+    .GetSection("AllowedOrigins")
+    .Get<string[]>() ?? [];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5500", "http://127.0.0.1:5500",
-                           "http://localhost:5173", "http://127.0.0.1:5173")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyMethod()
               .AllowAnyHeader()
-         .AllowCredentials();
+              .AllowCredentials();
     });
 });
 

@@ -34,8 +34,9 @@ public sealed class ExceptionMiddleware
         {
             await WriteError(context, StatusCodes.Status403Forbidden, ex.Message);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine(ex);
             await WriteError(
                 context,
                 StatusCodes.Status500InternalServerError,

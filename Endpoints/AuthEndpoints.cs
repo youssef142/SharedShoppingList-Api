@@ -58,11 +58,17 @@ namespace FamilyShoppingList.Endpoints
                 IAuthService authService) =>
             {
                 var refreshToken = http.Request.Cookies["refreshToken"];
-
+                foreach (var cookie in http.Request.Cookies)
+                {
+                    Console.WriteLine($"{cookie.Key} = {cookie.Value}");
+                }
                 if (string.IsNullOrWhiteSpace(refreshToken))
-                    return Results.Unauthorized();
+                    return Results.BadRequest(new
+                    {
+                        message = "Refresh token is missing."
+                    });
 
-                    var result = await authService.Refresh(refreshToken);
+                var result = await authService.Refresh(refreshToken);
 
                     http.SetRefreshToken(result.RefreshToken);
 

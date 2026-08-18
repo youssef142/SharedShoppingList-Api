@@ -12,11 +12,12 @@ namespace FamilyShoppingList.DTO
         )]
         public required string Username { get; set; }
 
+
         [Required(ErrorMessage = "Password is required.")]
-        [StringLength(200, MinimumLength = 8, ErrorMessage = "Password must be between 8 and 200 characters.")]
+        [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
         [RegularExpression(
-            @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9<>]).*$",
-            ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character. Characters '<' and '>' are not allowed."
+            @"^(?=.*[A-Za-z])(?=.*\d)\S{8,}$",
+            ErrorMessage = "Password must be at least 8 characters long, contain at least one letter, one number, and no spaces."
         )]
         public required string Password { get; set; }
     }

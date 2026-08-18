@@ -17,21 +17,4 @@
 		<PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
 	</ItemGroup>
 
-	<Target Name="BuildReact" BeforeTargets="Publish">
-
-		<Exec WorkingDirectory="..\FamilyShoppingList.React" Command="npm install" />
-
-		<Exec WorkingDirectory="..\FamilyShoppingList.React" Command="npm run build" />
-
-		<RemoveDir Directories="wwwroot" />
-
-		<MakeDir Directories="wwwroot" />
-
-		<ItemGroup>
-			<DistFiles Include="..\FamilyShoppingList.React\dist\**\*.*" />
-		</ItemGroup>
-
-		<Copy SourceFiles="@(DistFiles)" DestinationFiles="@(DistFiles->'wwwroot\%(RecursiveDir)%(Filename)%(Extension)')" />
-	</Target>
-
 </Project>

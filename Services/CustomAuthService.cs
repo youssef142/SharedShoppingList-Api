@@ -165,19 +165,19 @@ namespace FamilyShoppingList.Services
 
             if (dbRefreshToken is null || dbRefreshToken.IsExpired)
             {
-                throw new UnauthorizedException("Unauthorized");
+                throw new UnauthorizedException("expired");
             }
             if (dbRefreshToken.IsRevoked)
             {
                 // Should never happen, but be defensive.
                 if (dbRefreshToken.RevokedAt == null)
                 {
-                    throw new UnauthorizedException("Unauthorized");
+                    throw new UnauthorizedException("revoked");
                 }
 
                 if (dbRefreshToken.ReuseDetected)
                 {
-                    throw new UnauthorizedException("Unauthorized");
+                    throw new UnauthorizedException("steal");
                 }
 
                 var revokedSince = DateTime.UtcNow - dbRefreshToken.RevokedAt.Value;
@@ -185,7 +185,7 @@ namespace FamilyShoppingList.Services
                 // Duplicate refresh request (likely race condition)
                 if (revokedSince <= RefreshTokenGracePeriod)
                 {
-                    throw new UnauthorizedException("Unauthorized");
+                    throw new UnauthorizedException("dupe");
                 }           
 
                 // Outside the grace period, suspicious refresh token reuse.
@@ -194,7 +194,7 @@ namespace FamilyShoppingList.Services
 
                 var tokens = await _db.RefreshTokens
                     .Where(r => r.UserId == dbRefreshToken.UserId &&
-                                !r.IsRevoked)
+                                r.RevokedAt == null)
                     .ToListAsync();
 
                 var now = DateTime.UtcNow;
