@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using FamilyShoppingList.Exceptions;
+﻿using FamilyShoppingList.Exceptions;
 
 namespace FamilyShoppingList.Middleware;
 
@@ -20,23 +19,37 @@ public sealed class ExceptionMiddleware
         }
         catch (ConflictException ex)
         {
-            await WriteError(context, StatusCodes.Status409Conflict, ex.Message);
+            await WriteError(
+                context,
+                StatusCodes.Status409Conflict,
+                ex.Message,
+                ex.Errors);
         }
         catch (NotFoundException ex)
         {
-            await WriteError(context, StatusCodes.Status404NotFound, ex.Message);
+            await WriteError(
+                context,
+                StatusCodes.Status404NotFound,
+                ex.Message);
         }
         catch (UnauthorizedException ex)
         {
-            await WriteError(context, StatusCodes.Status401Unauthorized, ex.Message);
+            await WriteError(
+                context,
+                StatusCodes.Status401Unauthorized,
+                ex.Message);
         }
         catch (ForbiddenException ex)
         {
-            await WriteError(context, StatusCodes.Status403Forbidden, ex.Message);
+            await WriteError(
+                context,
+                StatusCodes.Status403Forbidden,
+                ex.Message);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
+
             await WriteError(
                 context,
                 StatusCodes.Status500InternalServerError,
@@ -47,14 +60,16 @@ public sealed class ExceptionMiddleware
     private static async Task WriteError(
         HttpContext context,
         int statusCode,
-        string message)
+        string message,
+        IEnumerable<string>? errors = null)
     {
         context.Response.StatusCode = statusCode;
         context.Response.ContentType = "application/json";
 
         await context.Response.WriteAsJsonAsync(new
         {
-            message
+            message,
+            errors = errors ?? []
         });
     }
 }

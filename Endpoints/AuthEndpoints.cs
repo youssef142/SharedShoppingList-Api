@@ -10,6 +10,7 @@ namespace FamilyShoppingList.Endpoints
     {
         public static void MapAuthEndpoints(this WebApplication app)
         {
+
             app.MapPost("/register", async (UserRegisterRequest request, ShoppingListDbContext db, IAuthService authService) =>
             {
                 var errors = request.ValidateModel();
@@ -70,12 +71,12 @@ namespace FamilyShoppingList.Endpoints
 
                 var result = await authService.Refresh(refreshToken);
 
-                    http.SetRefreshToken(result.RefreshToken);
+                http.SetRefreshToken(result.RefreshToken);
 
-                    return Results.Ok(new
-                    {
-                        accessToken = result.AccessToken
-                    });
+                return Results.Ok(new
+                {
+                    accessToken = result.AccessToken
+                });
             })
             .WithName("RefreshToken");
 

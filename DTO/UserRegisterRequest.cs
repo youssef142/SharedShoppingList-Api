@@ -26,7 +26,7 @@ namespace FamilyShoppingList.DTO
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
         [RegularExpression(
             @"^(?=.*[A-Za-z])(?=.*\d)\S{8,}$",
-            ErrorMessage = "Password must be at least 8 characters long, contain at least one letter, one number, and no spaces."
+            ErrorMessage = "Password must contain at least one letter, one number, and no spaces."
         )]
         public required string Password { get; set; }
     }

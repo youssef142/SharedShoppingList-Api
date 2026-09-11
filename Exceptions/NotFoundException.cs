@@ -2,7 +2,13 @@
 
 public sealed class NotFoundException : Exception
 {
-    public NotFoundException(string message) : base(message)
+    public IReadOnlyList<string> Errors { get; }
+
+    public NotFoundException(
+        string message,
+        IEnumerable<string>? errors = null)
+        : base(message)
     {
+        Errors = errors?.ToList() ?? [];
     }
 }

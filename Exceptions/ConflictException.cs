@@ -2,7 +2,13 @@
 
 public sealed class ConflictException : Exception
 {
-    public ConflictException(string message) : base(message)
+    public IReadOnlyList<string> Errors { get; }
+
+    public ConflictException(
+        string message,
+        IEnumerable<string>? errors = null)
+        : base(message)
     {
+        Errors = errors?.ToList() ?? [];
     }
 }

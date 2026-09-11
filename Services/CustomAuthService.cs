@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FamilyShoppingList.Services
 {
@@ -101,7 +102,11 @@ namespace FamilyShoppingList.Services
         {
             if (await _db.Users.AnyAsync(u => u.Username == registerRequest.Username))
             {
-                throw new ConflictException("Username is already taken.");
+                throw new ConflictException(
+                "Registration failed.",
+                [
+                    "The email is already registered."
+                ]);
             }
 
             var user = new User
@@ -109,10 +114,11 @@ namespace FamilyShoppingList.Services
                 Id = Guid.NewGuid(),
                 Username = registerRequest.Username,
                 Email = registerRequest.Email,
-                PasswordHash = HashPassword(new User { 
+                PasswordHash = HashPassword(new User
+                {
                     Username = " ",
-                    PasswordHash = " " 
-                    }, registerRequest.Password)
+                    PasswordHash = " "
+                }, registerRequest.Password)
             };
             _db.Users.Add(user);
 
@@ -130,12 +136,16 @@ namespace FamilyShoppingList.Services
 
         public async Task<AuthTokenResponse> Login(UserLoginRequest loginRequest)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == loginRequest.Username);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
             if (user is null ||
                 VerifyHash(user, loginRequest.Password)
                 == false)
             {
-                throw new UnauthorizedException("Invalid username or password.");
+                throw new UnauthorizedException(
+                "Login failed.",
+                [
+                    "Invalid email or password."
+                ]);
             }
 
             string plainRefreshToken = GeneratePlainToken();
@@ -152,7 +162,7 @@ namespace FamilyShoppingList.Services
                 AccessToken = accessToken,
                 RefreshToken = plainRefreshToken
             };
-  
+
         }
 
         public async Task<AuthTokenResponse> Refresh(string refreshTokenFromCookie)
@@ -165,19 +175,32 @@ namespace FamilyShoppingList.Services
 
             if (dbRefreshToken is null || dbRefreshToken.IsExpired)
             {
-                throw new UnauthorizedException("expired");
+                throw new UnauthorizedException(
+                "Unauthorized",
+                [
+                    "Unauthorized"
+                ]);
             }
             if (dbRefreshToken.IsRevoked)
             {
                 // Should never happen, but be defensive.
                 if (dbRefreshToken.RevokedAt == null)
                 {
-                    throw new UnauthorizedException("revoked");
+                    throw new UnauthorizedException(
+                    "Unauthorized",
+                    [
+                        "Unauthorized"
+                    ]);
                 }
 
+                // Steal
                 if (dbRefreshToken.ReuseDetected)
                 {
-                    throw new UnauthorizedException("steal");
+                    throw new UnauthorizedException(
+                    "Unauthorized",
+                    [
+                        "Unauthorized"
+                    ]);
                 }
 
                 var revokedSince = DateTime.UtcNow - dbRefreshToken.RevokedAt.Value;
@@ -185,8 +208,12 @@ namespace FamilyShoppingList.Services
                 // Duplicate refresh request (likely race condition)
                 if (revokedSince <= RefreshTokenGracePeriod)
                 {
-                    throw new UnauthorizedException("dupe");
-                }           
+                    throw new UnauthorizedException(
+                    "Unauthorized",
+                    [
+                        "Unauthorized"
+                    ]);
+                }
 
                 // Outside the grace period, suspicious refresh token reuse.
 
@@ -205,14 +232,22 @@ namespace FamilyShoppingList.Services
                 }
 
                 await _db.SaveChangesAsync();
-                throw new UnauthorizedException("Unauthorized");
+                throw new UnauthorizedException(
+                "Unauthorized",
+                [
+                    "Unauthorized"
+                ]);
             }
 
             var user = dbRefreshToken.User;
 
             if (user is null)
             {
-                throw new UnauthorizedException("Unauthorized");
+                throw new UnauthorizedException(
+                "Unauthorized",
+                [
+                    "Unauthorized"
+                ]);
             }
 
             var newAccessToken = GenerateAccessToken(user);

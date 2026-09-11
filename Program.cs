@@ -13,7 +13,8 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // services
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ShoppingListDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ShoppingListDb")));
 builder.Services.AddScoped<IAuthService, CustomAuthService>();
@@ -78,11 +79,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
 
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // Endpoints
 app.MapAuthEndpoints();
