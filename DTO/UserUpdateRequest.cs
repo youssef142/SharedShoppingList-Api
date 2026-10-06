@@ -4,12 +4,13 @@ namespace FamilyShoppingList.DTO
 {
     public class UserUpdateRequest
     {
-        [Required(ErrorMessage = "DisplayName is required.")]
-        [StringLength(30, MinimumLength = 2)]
-        [RegularExpression(
-            @"^[a-zA-Z ]+$",
-            ErrorMessage = "Display name can only contain letters and spaces."
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Display name is required.")]
+        [StringLength(50, MinimumLength = 1, ErrorMessage = "Display name must be between 1 and 50 characters.")]
+                [RegularExpression(
+            @"^[a-zA-Z\u0600-\u06FF0-9_-]+(?: [a-zA-Z\u0600-\u06FF0-9_-]+)*$",
+            ErrorMessage = "Only Arabic/English letters, numbers, spaces, '-' and '_' are allowed."
         )]
+        public string Name { get; set; }
         public string DisplayName { get; set; } = string.Empty;
 
 

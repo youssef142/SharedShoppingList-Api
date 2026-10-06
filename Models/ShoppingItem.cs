@@ -23,5 +23,8 @@ public class ShoppingItem
     public User? StatusChangedByUser { get; set; }
     public Guid GroupId { get; set; }
     public Group? Group { get; set; }
+
+    public Guid? CategoryId { get; set; }   // nullable = "uncategorized" allowed
+    public Category? Category { get; set; }
 }
 

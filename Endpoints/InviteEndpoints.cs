@@ -43,19 +43,35 @@ namespace FamilyShoppingList.Endpoints
                     .SingleOrDefaultAsync();
 
                 if (result is null)
-                    return Results.NotFound(new { message = "User not found." });
+                    return Results.NotFound(new
+                    {
+                        message = "Invitation failed.",
+                        errors = new[] { "User not found." }
+                    });
 
                 if (!result.RequesterIsMember)
                     return Results.Forbid();
-
+                
                 if (result.GroupName == null)
-                    return Results.BadRequest(new { message = "Group not found." });
+                    return Results.BadRequest(new
+                    {
+                        message = "Invitation failed.",
+                        errors = new[] { "Group not found." }
+                    });
 
                 if (result.InviteAlreadyExists)
-                    return Results.BadRequest(new { message = "User already has a pending invite." });
+                    return Results.BadRequest(new
+                    {
+                        message = "Invitation failed.",
+                        errors = new[] { "User already has a pending invite." }
+                    });
 
                 if (result.InvitedIsMember)
-                    return Results.BadRequest(new { message = "Invited user is already a member." });
+                    return Results.BadRequest(new
+                    {
+                        message = "Invitation failed.",
+                        errors = new[] { "Invited user is already a member." }
+                    });
 
 
 
@@ -154,8 +170,11 @@ namespace FamilyShoppingList.Endpoints
                 action = action.ToLowerInvariant();
 
                 if (action != "accept" && action != "decline")
-                    return Results.BadRequest(new { message = "Invalid action. Use 'accept' or 'decline'." });
-
+                    return Results.BadRequest(new
+                    {
+                        message = "Invitation failed.",
+                        errors = new[] { "Invalid action. Use 'accept' or 'decline'." }
+                    });
 
                 // check user token and get user id
                 var userId = user.GetUserId();
@@ -184,14 +203,21 @@ namespace FamilyShoppingList.Endpoints
 
                 // check if the invite is still pending
                 if (invite.InviteStatus != InviteStatus.Pending)
-                    return Results.BadRequest(new { message = "Invalid invite status." });
+                    return Results.BadRequest(new
+                    {
+                        message = "Invitation response failed.",
+                        errors = new[] { "Invalid invite status." }
+                    });
 
                 // check if the user is already a member of the group
                 var alreadyMember = result?.AlreadyMember ?? false;
 
                 if (alreadyMember)
-                    return Results.BadRequest(new { message = "You are already a member of this group." });
-
+                    return Results.BadRequest(new
+                    {
+                        message = "Joining group failed.",
+                        errors = new[] { "You are already a member of this group." }
+                    });
 
 
                 if (action == "accept")

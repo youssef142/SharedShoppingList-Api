@@ -2,7 +2,7 @@
 using FamilyShoppingList.DTO;
 using FamilyShoppingList.Extensions;
 using FamilyShoppingList.Services.Interfaces;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace FamilyShoppingList.Endpoints
 {
@@ -66,7 +66,8 @@ namespace FamilyShoppingList.Endpoints
                 if (string.IsNullOrWhiteSpace(refreshToken))
                     return Results.BadRequest(new
                     {
-                        message = "Refresh token is missing."
+                        message = "Refresh failed.",
+                        errors = new[] { "Refresh token is missing." }
                     });
 
                 var result = await authService.Refresh(refreshToken);

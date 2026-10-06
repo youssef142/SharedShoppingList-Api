@@ -156,7 +156,11 @@ namespace FamilyShoppingList.Endpoints
                     return Results.Forbid();
 
                 if (membership.Group.OwnerUserId == userId)
-                    return Results.BadRequest("The group owner cannot leave the group.");
+                    return Results.BadRequest(new
+                    {
+                        message = "Leaving group failed.",
+                        errors = new[] { "The group owner cannot leave the group." }
+                    });
 
                 db.GroupMembers.Remove(membership);
 

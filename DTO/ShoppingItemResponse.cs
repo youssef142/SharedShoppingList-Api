@@ -11,6 +11,8 @@
         public string? AddedByUsername { get; set; }
 
         public string? StatusChangedByUsername { get; set; }
+        public Guid? CategoryId { get; set; }
+        public string? CategoryName { get; set; }
 
     }
 }

@@ -90,6 +90,10 @@ app.MapGroupEndpoints();
 app.MapItemEndpoints();
 app.MapInviteEndpoints();
 app.MapUserEndpoints();
+app.MapCategoryEndpoints();
+app.MapAnalyticsEndpoints();
+app.MapItemEditRequestEndpoints();
+
 
 app.Run();
 

@@ -65,9 +65,10 @@ namespace FamilyShoppingList.Endpoints
 
                 if (exists)
                 {
-                    return Results.Conflict(new 
-                    { 
-                        message = "Email already exists."
+                    return Results.Conflict(new
+                    {
+                        message = "Registration failed.",
+                        errors = new[] { "Email already exists." }
                     });
                 }
 

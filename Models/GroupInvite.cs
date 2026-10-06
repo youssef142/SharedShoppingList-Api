@@ -10,6 +10,6 @@
         public Guid InvitingUserId { get; set; }
         public User? InvitingUser { get; set; }
         public InviteStatus InviteStatus { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

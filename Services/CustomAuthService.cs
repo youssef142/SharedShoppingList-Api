@@ -114,11 +114,10 @@ namespace FamilyShoppingList.Services
                 Id = Guid.NewGuid(),
                 Username = registerRequest.Username,
                 Email = registerRequest.Email,
-                PasswordHash = HashPassword(new User
-                {
+                PasswordHash = HashPassword(new User { 
                     Username = " ",
-                    PasswordHash = " "
-                }, registerRequest.Password)
+                    PasswordHash = " " 
+                    }, registerRequest.Password)
             };
             _db.Users.Add(user);
 
@@ -162,7 +161,7 @@ namespace FamilyShoppingList.Services
                 AccessToken = accessToken,
                 RefreshToken = plainRefreshToken
             };
-
+  
         }
 
         public async Task<AuthTokenResponse> Refresh(string refreshTokenFromCookie)
@@ -213,7 +212,7 @@ namespace FamilyShoppingList.Services
                     [
                         "Unauthorized"
                     ]);
-                }
+                }           
 
                 // Outside the grace period, suspicious refresh token reuse.
 
