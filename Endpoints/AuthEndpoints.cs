@@ -2,7 +2,7 @@
 using FamilyShoppingList.DTO;
 using FamilyShoppingList.Extensions;
 using FamilyShoppingList.Services.Interfaces;
-
+  
 
 namespace FamilyShoppingList.Endpoints
 {

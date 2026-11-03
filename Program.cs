@@ -40,6 +40,14 @@ builder.Services.AddCors(options =>
     });
 });
 
+var jwtSecretPath = "/run/secrets/jwt_key";
+
+if (File.Exists(jwtSecretPath))
+{
+    builder.Configuration["Jwt:Key"] =
+        File.ReadAllText(jwtSecretPath).Trim();
+}
+
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException("Jwt:Key is missing from configuration.");
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];

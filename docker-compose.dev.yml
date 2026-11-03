@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      target: development
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+    env_file:
+      - ./.env.dev
+
+    volumes:
+      - .:/src
+
+      - DB:/src/db
+
+      - /src/bin
+      - /src/obj
+  
+volumes:
+  DB:
+

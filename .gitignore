@@ -1,27 +1,27 @@
+# .NET build output
+[Bb]in/
+[Oo]bj/
+
 # Visual Studio
 .vs/
 *.user
 *.suo
 
-# Build output
-bin/
-obj/
+# Rider / VS Code
+.idea/
+.vscode/
 
-# Static files
-wwwroot/
+# Local SQLite database
+*.db
+*.db-shm
+*.db-wal
 App_Data/
 
-# Environment files / secrets
+# Local environment files and secrets
+.env
+.env.*
+!.env.example
+!.env.dev.example
+secrets/
 appsettings.Development.json
 
-# Logs
-*.log
-
-# Rider
-.idea/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-shoppinglist.db

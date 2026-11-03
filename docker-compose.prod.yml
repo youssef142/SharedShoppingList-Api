@@ -1,0 +1,7 @@
+services:
+  app:
+    build:
+      target: production
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      Jwt__Key: ${JWT_KEY:?JWT_KEY is required}

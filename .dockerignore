@@ -1,0 +1,28 @@
+# Git metadata
+.git
+.github
+
+# IDE files
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+
+# Local database files
+*.db
+*.db-shm
+*.db-wal
+
+# Local environment and secret files
+.env
+.env.*
+secrets/
+appsettings.Development.json
+
+# Docker files not needed by the application build
+Dockerfile*
+docker-compose*.yml
