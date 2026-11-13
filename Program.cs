@@ -1,5 +1,4 @@
 using FamilyShoppingList.Data;
-using FamilyShoppingList.Endpoints;
 using FamilyShoppingList.Middleware;
 using FamilyShoppingList.Models;
 using FamilyShoppingList.Services;
@@ -20,10 +19,17 @@ builder.Services.AddDbContext<ShoppingListDbContext>(options =>
 builder.Services.AddScoped<IAuthService, CustomAuthService>();
 builder.Services.AddScoped<PasswordHasher<User>>();
 
-builder.Services.ConfigureHttpJsonOptions(options =>
-{
-    options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-});
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    })
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        // Controllers validate DTOs themselves (request.ValidateModel()) so the
+        // { message, errors } response shape stays the same for the frontend.
+        options.SuppressModelStateInvalidFilter = true;
+    });
 
 var allowedOrigins = builder.Configuration
     .GetSection("AllowedOrigins")
@@ -93,14 +99,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 // Endpoints
-app.MapAuthEndpoints();
-app.MapGroupEndpoints();
-app.MapItemEndpoints();
-app.MapInviteEndpoints();
-app.MapUserEndpoints();
-app.MapCategoryEndpoints();
-app.MapAnalyticsEndpoints();
-app.MapItemEditRequestEndpoints();
+app.MapControllers();
 
 
 app.Run();

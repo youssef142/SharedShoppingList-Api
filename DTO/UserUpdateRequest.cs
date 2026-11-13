@@ -10,7 +10,6 @@ namespace FamilyShoppingList.DTO
             @"^[a-zA-Z\u0600-\u06FF0-9_-]+(?: [a-zA-Z\u0600-\u06FF0-9_-]+)*$",
             ErrorMessage = "Only Arabic/English letters, numbers, spaces, '-' and '_' are allowed."
         )]
-        public string Name { get; set; }
         public string DisplayName { get; set; } = string.Empty;
 
 
