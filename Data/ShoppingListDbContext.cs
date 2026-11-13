@@ -106,7 +106,6 @@ namespace FamilyShoppingList.Data
                 .HasForeignKey(c => c.GroupId)
                 .OnDelete(DeleteBehavior.Cascade); // deleting a group deletes its categories
 
-            // Category -> ShoppingItems (one-to-many)
             modelBuilder.Entity<ShoppingItem>()
                 .HasOne(i => i.Category)
                 .WithMany(c => c.ShoppingItems)
@@ -117,6 +116,12 @@ namespace FamilyShoppingList.Data
             modelBuilder.Entity<Category>()
                 .HasIndex(c => new { c.GroupId, c.Name })
                 .IsUnique();
+            
+            modelBuilder.Entity<ShoppingItem>()
+                .HasIndex(i => new { i.GroupId, i.Status });
+
+            modelBuilder.Entity<GroupMember>()
+                .HasIndex(gm => new { gm.UserId, gm.GroupId });
 
             modelBuilder.Entity<ItemEditRequest>()
                 .HasOne(r => r.Item)
